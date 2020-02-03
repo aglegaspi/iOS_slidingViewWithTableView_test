@@ -49,6 +49,14 @@ class ViewController: UIViewController {
         return tableview
     }()
     
+    lazy var chevronArrows: UIImageView = {
+        var image = UIImageView()
+        image.image = UIImage(systemName: "chevron.compact.up")
+        image.tintColor = .black
+        return image
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .orange
@@ -56,8 +64,10 @@ class ViewController: UIViewController {
         swipeUp()
         swipeDown()
         view.addSubview(sliderView)
+        sliderView.addSubview(chevronArrows)
         sliderView.addSubview(poiTableView)
         constrainSliderView()
+        constrainChevronImage()
         constrainPOITableView()
     }
     
@@ -89,6 +99,7 @@ class ViewController: UIViewController {
                     
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 0.5
+                    self?.poiTableView.alpha = 0
                     }, completion: nil)
                 
             case UISwipeGestureRecognizer.Direction.up:
@@ -101,6 +112,7 @@ class ViewController: UIViewController {
                     
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
+                    self?.poiTableView.alpha = 1.0
                     }, completion: nil)
                 
             default:
@@ -130,7 +142,7 @@ class ViewController: UIViewController {
         sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 20)
         sliderViewTopConstraints?.isActive = true
         
-        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
+        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -65)
         newSliderViewTopConstraints?.isActive = false
     }
     
@@ -142,6 +154,17 @@ class ViewController: UIViewController {
             poiTableView.bottomAnchor.constraint(equalTo: sliderView.bottomAnchor),
             poiTableView.leadingAnchor.constraint(equalTo: sliderView.leadingAnchor),
             poiTableView.trailingAnchor.constraint(equalTo: sliderView.trailingAnchor)
+        ])
+    }
+    
+    private func constrainChevronImage() {
+        chevronArrows.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            chevronArrows.topAnchor.constraint(equalTo: sliderView.topAnchor, constant: 10),
+            chevronArrows.centerXAnchor.constraint(equalTo: sliderView.centerXAnchor),
+            chevronArrows.bottomAnchor.constraint(equalTo: poiTableView.topAnchor, constant: -10),
+            chevronArrows.widthAnchor.constraint(equalToConstant: 40),
+            chevronArrows.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
     
