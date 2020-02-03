@@ -27,9 +27,6 @@ class ViewController: UIViewController {
         CellData(isOpen: false, title: "Central Parks", sectionData: "Third Stop")
     ]
     
-    //MARK:-- Comments 2
-    
-    // first thing is i did was modify the constraints. By having access to the constraints, we can change them when ever we activate a guesture by activating and deactivating them as we see fit.
     var sliderViewTopConstraints: NSLayoutConstraint?
     var newSliderViewTopConstraints: NSLayoutConstraint?
     //TODO: add new constraint
@@ -76,10 +73,10 @@ class ViewController: UIViewController {
         self.view.addGestureRecognizer(swipeUp)
     }
     
-   
+    
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         
-     
+        
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case UISwipeGestureRecognizer.Direction.down:
@@ -119,9 +116,8 @@ class ViewController: UIViewController {
         } else {
             sampleData[sender.tag].isOpen = true
         }
-        
-        print(sampleData[sender.tag])
-        poiTableView.reloadData()
+        let incides: IndexSet = [sender.tag]
+        poiTableView.reloadSections(incides, with: .fade)
         
     }
     
@@ -191,16 +187,25 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //TODO: work on animation on cell
         guard let cell = poiTableView.dequeueReusableCell(withIdentifier: "StopCell", for: indexPath) as? StopsTableViewCell else { return UITableViewCell() }
-        cell.layoutIfNeeded()
-        cell.stopLabel.text = sampleData[indexPath.section].sectionData
         
+        cell.alpha = 0
+        
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0.05 * Double(indexPath.row),
+            animations: {
+                cell.alpha = 1
+        })
+        
+        
+        cell.stopLabel.text = sampleData[indexPath.section].sectionData
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-    
+
     
 }
 
