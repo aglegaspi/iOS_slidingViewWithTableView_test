@@ -64,13 +64,13 @@ class ViewController: UIViewController {
     private func swipeDown() {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = .down
-        self.view.addGestureRecognizer(swipeDown)
+        self.sliderView.addGestureRecognizer(swipeDown)
     }
     
     private func swipeUp() {
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeUp.direction = UISwipeGestureRecognizer.Direction.up
-        self.view.addGestureRecognizer(swipeUp)
+        self.sliderView.addGestureRecognizer(swipeUp)
     }
     
     
@@ -130,7 +130,7 @@ class ViewController: UIViewController {
         sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 20)
         sliderViewTopConstraints?.isActive = true
         
-        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -30)
+        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
         newSliderViewTopConstraints?.isActive = false
     }
     
@@ -138,7 +138,7 @@ class ViewController: UIViewController {
     private func constrainPOITableView() {
         poiTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            poiTableView.topAnchor.constraint(equalTo: sliderView.topAnchor),
+            poiTableView.topAnchor.constraint(equalTo: sliderView.topAnchor, constant: 50),
             poiTableView.bottomAnchor.constraint(equalTo: sliderView.bottomAnchor),
             poiTableView.leadingAnchor.constraint(equalTo: sliderView.leadingAnchor),
             poiTableView.trailingAnchor.constraint(equalTo: sliderView.trailingAnchor)

@@ -16,6 +16,7 @@ class StopsTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont(name: "Avenir-Light", size: 26)
+        label.textColor = .black
         label.text = "Testing"
         label.numberOfLines = 0
         label.backgroundColor = .white
