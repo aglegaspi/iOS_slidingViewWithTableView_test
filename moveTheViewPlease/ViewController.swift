@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    //MARK: PROPERTIES
+    //MARK: -PROPERTIES
     var sampleData: [CellData] = [
         CellData(isOpen: false, title: "Empire State Building",
                  sectionData: """
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     let sliderViewHeight: CGFloat = 500
     
     
-    //MARK: VIEWS
+    //MARK: -VIEWS
     lazy var sliderView: UIView = {
         var view = UIView()
         view.backgroundColor = .white
@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         return image
     }()
     
-    //MARK: VIEWDIDLOAD
+    //MARK: -VIEWDIDLOAD
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         loadGestures()
     }
     
-    //MARK: PRIVATE FUNCTIONS
+    //MARK: -PRIVATE FUNCTIONS
     private func loadGestures() {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = .down
@@ -86,7 +86,7 @@ class ViewController: UIViewController {
     }
     
     
-    //MARK: RESPOND TO GESTURE
+    //MARK: -RESPOND TO GESTURE
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         print(gesture)
         
@@ -149,7 +149,7 @@ class ViewController: UIViewController {
         
     }
     
-    //MARK: OBJ-C FUNCTIONS
+    //MARK: -OBJ-C FUNCTIONS
     @objc func buttonPressed(sender: UIButton) {
         print(sender.tag)
         if sampleData[sender.tag].isOpen {
@@ -163,7 +163,7 @@ class ViewController: UIViewController {
         
     }
     
-    //MARK: CONSTRAINTS
+    //MARK: -CONSTRAINTS
     private func constrainSliderView() {
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -201,7 +201,7 @@ class ViewController: UIViewController {
 }
 
 
-//MARK: EXT. TABLEVIEW DELEGATE & DATASOURCE
+//MARK: -EXT. TABLEVIEW DELEGATE & DATASOURCE
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
