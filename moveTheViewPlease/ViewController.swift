@@ -60,7 +60,6 @@ class ViewController: UIViewController {
     //MARK: -VIEWDIDLOAD
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .orange
         view.addSubview(sliderView)
         sliderView.addSubview(chevronArrows)
@@ -249,6 +248,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         })
         
         cell.stopLabel.text = sampleData[indexPath.section].sectionData
+        cell.selectionStyle = .none
         return cell
     }
     
