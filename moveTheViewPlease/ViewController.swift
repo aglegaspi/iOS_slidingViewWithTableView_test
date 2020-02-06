@@ -24,6 +24,14 @@ class ViewController: UIViewController {
         CellData(isOpen: false, title: "Central Parks", sectionData: "Third Stop")
     ]
     
+    let sampleCategoryData: [CategoryData] = [
+        CategoryData(name: "History"),
+        CategoryData(name: "Art"),
+        CategoryData(name: "Blah"),
+        CategoryData(name: "Blah2"),
+        CategoryData(name: "Yeet")
+    ]
+    
     var sliderViewTopConstraints: NSLayoutConstraint?
     var newSliderViewTopConstraints: NSLayoutConstraint?
     //TODO: add new constraint
@@ -57,16 +65,30 @@ class ViewController: UIViewController {
         return image
     }()
     
-    //MARK: -VIEWDIDLOAD
+    lazy var categoriesCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
+        collectionView.register(CategoriesCollectionViewCell.self, forCellWithReuseIdentifier: "categoryCell")
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .orange
+        categoriesCollectionView.dataSource = self
+        categoriesCollectionView.delegate = self
         
         view.backgroundColor = .orange
         view.addSubview(sliderView)
         sliderView.addSubview(chevronArrows)
+        sliderView.addSubview(categoriesCollectionView)
         sliderView.addSubview(poiTableView)
         constrainSliderView()
         constrainChevronImage()
+        constrainCategoriesCollectionView()
         constrainPOITableView()
         loadGestures()
     }
@@ -126,6 +148,7 @@ class ViewController: UIViewController {
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 0.5
                     self?.poiTableView.alpha = 0
+                    self?.categoriesCollectionView.alpha = 0
                     }, completion: nil)
                 
             case UISwipeGestureRecognizer.Direction.up:
@@ -139,6 +162,7 @@ class ViewController: UIViewController {
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
+                    self?.categoriesCollectionView.alpha = 1.0
                     }, completion: nil)
                 
             default:
@@ -180,7 +204,7 @@ class ViewController: UIViewController {
     private func constrainPOITableView() {
         poiTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            poiTableView.topAnchor.constraint(equalTo: sliderView.topAnchor, constant: 50),
+            poiTableView.topAnchor.constraint(equalTo: categoriesCollectionView.bottomAnchor, constant: 10),
             poiTableView.bottomAnchor.constraint(equalTo: sliderView.bottomAnchor),
             poiTableView.leadingAnchor.constraint(equalTo: sliderView.leadingAnchor),
             poiTableView.trailingAnchor.constraint(equalTo: sliderView.trailingAnchor)
@@ -192,9 +216,20 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             chevronArrows.topAnchor.constraint(equalTo: sliderView.topAnchor, constant: 10),
             chevronArrows.centerXAnchor.constraint(equalTo: sliderView.centerXAnchor),
-            chevronArrows.bottomAnchor.constraint(equalTo: poiTableView.topAnchor, constant: -10),
+            chevronArrows.bottomAnchor.constraint(equalTo: categoriesCollectionView.topAnchor, constant: -10),
             chevronArrows.widthAnchor.constraint(equalToConstant: 40),
-            chevronArrows.heightAnchor.constraint(equalToConstant: 20)
+            chevronArrows.heightAnchor.constraint(equalToConstant: 30)
+        ])
+    }
+    
+    private func constrainCategoriesCollectionView() {
+        categoriesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            categoriesCollectionView.topAnchor.constraint(equalTo: chevronArrows.bottomAnchor, constant: 10),
+            categoriesCollectionView.leadingAnchor.constraint(equalTo: sliderView.leadingAnchor),
+            categoriesCollectionView.trailingAnchor.constraint(equalTo: sliderView.trailingAnchor),
+            categoriesCollectionView.bottomAnchor.constraint(equalTo: poiTableView.topAnchor, constant: -10),
+            categoriesCollectionView.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
@@ -259,5 +294,28 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
+      //extension ViewController: UIGestureRecognizerDelegate { }
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return sampleCategoryData.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let category = sampleCategoryData[indexPath.row]
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as? CategoriesCollectionViewCell else {return UICollectionViewCell()}
+        
+        cell.setUpCells(cell: cell, data: category)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 50)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    }
+    
+}
 
-//extension ViewController: UIGestureRecognizerDelegate { }

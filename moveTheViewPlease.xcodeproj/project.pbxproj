@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DA2D7A623E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */; };
+		1DA2D7AA23E8CFB700B9FB35 /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */; };
 		EC38356423E72CC700762FE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC38356323E72CC700762FE6 /* AppDelegate.swift */; };
 		EC38356623E72CC700762FE6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC38356523E72CC700762FE6 /* SceneDelegate.swift */; };
 		EC38356823E72CC700762FE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC38356723E72CC700762FE6 /* ViewController.swift */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
+		1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
 		EC38356023E72CC700762FE6 /* moveTheViewPlease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = moveTheViewPlease.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC38356323E72CC700762FE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EC38356523E72CC700762FE6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +66,9 @@
 				EC38356523E72CC700762FE6 /* SceneDelegate.swift */,
 				EC38356723E72CC700762FE6 /* ViewController.swift */,
 				EC38358723E78FD400762FE6 /* CellData.swift */,
+				1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */,
 				EC38357F23E789F500762FE6 /* StopsTableViewCell.swift */,
+				1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */,
 				EC38356C23E72CCC00762FE6 /* Assets.xcassets */,
 				EC38356E23E72CCC00762FE6 /* LaunchScreen.storyboard */,
 				EC38357123E72CCC00762FE6 /* Info.plist */,
@@ -140,6 +146,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DA2D7A623E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift in Sources */,
+				1DA2D7AA23E8CFB700B9FB35 /* CategoryData.swift in Sources */,
 				EC38356823E72CC700762FE6 /* ViewController.swift in Sources */,
 				EC38356423E72CC700762FE6 /* AppDelegate.swift in Sources */,
 				EC38356623E72CC700762FE6 /* SceneDelegate.swift in Sources */,
