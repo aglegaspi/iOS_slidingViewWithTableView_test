@@ -5,14 +5,11 @@
 //  Created by Alex 6.1 on 2/2/20.
 //  Copyright © 2020 aglegaspi. All rights reserved.
 //
-
-//MARK:-- Comments 1
-//Mixing constraints and frame tend to give problems depending on which device or function you usee. to combat that, its better to modify just the constraints. and its much easier to work with.
-
 import UIKit
 
 class ViewController: UIViewController {
     
+    //MARK: -PROPERTIES
     var sampleData: [CellData] = [
         CellData(isOpen: false, title: "Empire State Building",
                  sectionData: """
@@ -42,6 +39,8 @@ class ViewController: UIViewController {
     
     let sliderViewHeight: CGFloat = 500
     
+    
+    //MARK: -VIEWS
     lazy var sliderView: UIView = {
         var view = UIView()
         view.backgroundColor = .white
@@ -54,6 +53,7 @@ class ViewController: UIViewController {
         tableview.delegate = self
         tableview.dataSource = self
         tableview.backgroundColor = .clear
+        tableview.separatorStyle = .none
         return tableview
     }()
     
@@ -61,6 +61,7 @@ class ViewController: UIViewController {
         var image = UIImageView()
         image.image = UIImage(systemName: "chevron.compact.up")
         image.tintColor = .black
+        image.isUserInteractionEnabled = true
         return image
     }()
     
@@ -80,8 +81,7 @@ class ViewController: UIViewController {
         categoriesCollectionView.dataSource = self
         categoriesCollectionView.delegate = self
         
-        swipeUp()
-        swipeDown()
+        view.backgroundColor = .orange
         view.addSubview(sliderView)
         sliderView.addSubview(chevronArrows)
         sliderView.addSubview(categoriesCollectionView)
@@ -90,23 +90,50 @@ class ViewController: UIViewController {
         constrainChevronImage()
         constrainCategoriesCollectionView()
         constrainPOITableView()
+        loadGestures()
     }
     
-    private func swipeDown() {
+    //MARK: -PRIVATE FUNCTIONS
+    private func loadGestures() {
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = .down
         self.sliderView.addGestureRecognizer(swipeDown)
-    }
-    
-    private func swipeUp() {
+        
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeUp.direction = UISwipeGestureRecognizer.Direction.up
         self.sliderView.addGestureRecognizer(swipeUp)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        self.chevronArrows.addGestureRecognizer(tap)
     }
     
     
+    //MARK: -RESPOND TO GESTURE
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        print(gesture)
         
+        if let tapGesture = gesture as? UITapGestureRecognizer {
+             print("tapped")
+             switch tapGesture.numberOfTouches {
+             case 1:
+                 print("one tap")
+                
+                sliderViewTopConstraints?.isActive = true
+                newSliderViewTopConstraints?.isActive = false
+                
+                UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
+                    
+                    self?.view.layoutIfNeeded()
+                    self?.sliderView.alpha = 1.0
+                    self?.poiTableView.alpha = 1.0
+                    }, completion: nil)
+             case 2:
+                 print("two tap")
+             default:
+                 print("dunno know")
+             }
+             
+        }
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
@@ -142,8 +169,11 @@ class ViewController: UIViewController {
                 break
             }
         }
+        
+        
     }
     
+    //MARK: -OBJ-C FUNCTIONS
     @objc func buttonPressed(sender: UIButton) {
         print(sender.tag)
         if sampleData[sender.tag].isOpen {
@@ -151,12 +181,13 @@ class ViewController: UIViewController {
         } else {
             sampleData[sender.tag].isOpen = true
         }
+        
         let incides: IndexSet = [sender.tag]
         poiTableView.reloadSections(incides, with: .fade)
         
     }
     
-    
+    //MARK: -CONSTRAINTS
     private func constrainSliderView() {
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -204,8 +235,8 @@ class ViewController: UIViewController {
     
 }
 
-//MARK: - Extensions
 
+//MARK: -EXT. TABLEVIEW DELEGATE & DATASOURCE
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -242,18 +273,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //TODO: work on animation on cell
+    
         guard let cell = poiTableView.dequeueReusableCell(withIdentifier: "StopCell", for: indexPath) as? StopsTableViewCell else { return UITableViewCell() }
         
-        cell.alpha = 0
-        
         UIView.animate(
-            withDuration: 0.5,
+            withDuration: 0.3,
             delay: 0.05 * Double(indexPath.row),
             animations: {
                 cell.alpha = 1
         })
-        
         
         cell.stopLabel.text = sampleData[indexPath.section].sectionData
         return cell
@@ -266,8 +294,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+      //extension ViewController: UIGestureRecognizerDelegate { }
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sampleCategoryData.count
     }
@@ -290,4 +318,4 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     }
     
 }
-extension ViewController: UICollectionViewDelegateFlowLayout {}
+
