@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D37620023ECBA2400C474E3 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3761FF23ECBA2400C474E3 /* Enums.swift */; };
 		1DA2D7A623E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */; };
 		1DA2D7AA23E8CFB700B9FB35 /* CategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */; };
 		EC38356423E72CC700762FE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC38356323E72CC700762FE6 /* AppDelegate.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D3761FF23ECBA2400C474E3 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryData.swift; sourceTree = "<group>"; };
 		EC38356023E72CC700762FE6 /* moveTheViewPlease.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = moveTheViewPlease.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +71,7 @@
 				1DA2D7A923E8CFB700B9FB35 /* CategoryData.swift */,
 				EC38357F23E789F500762FE6 /* StopsTableViewCell.swift */,
 				1DA2D7A523E8C6BC00B9FB35 /* CategoriesCollectionViewCell.swift */,
+				1D3761FF23ECBA2400C474E3 /* Enums.swift */,
 				EC38356C23E72CCC00762FE6 /* Assets.xcassets */,
 				EC38356E23E72CCC00762FE6 /* LaunchScreen.storyboard */,
 				EC38357123E72CCC00762FE6 /* Info.plist */,
@@ -152,6 +155,7 @@
 				EC38356423E72CC700762FE6 /* AppDelegate.swift in Sources */,
 				EC38356623E72CC700762FE6 /* SceneDelegate.swift in Sources */,
 				EC38358823E78FD400762FE6 /* CellData.swift in Sources */,
+				1D37620023ECBA2400C474E3 /* Enums.swift in Sources */,
 				EC38358023E789F500762FE6 /* StopsTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

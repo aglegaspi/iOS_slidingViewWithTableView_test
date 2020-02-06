@@ -12,4 +12,5 @@ struct CellData {
     var isOpen: Bool
     let title: String
     let sectionData: String
+    let category: String
 }

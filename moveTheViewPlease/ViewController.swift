@@ -16,20 +16,20 @@ class ViewController: UIViewController {
                     First Stop
                     Another Stop
                     Food Stop
-                    """),
+                    """, category: Enums.categories.History.rawValue),
         CellData(isOpen: false, title: "National Museum of Mathematics", sectionData: """
            Second Stop
            Restroom Stop
-           """),
-        CellData(isOpen: false, title: "Central Parks", sectionData: "Third Stop")
+           """, category: Enums.categories.History.rawValue),
+        CellData(isOpen: false, title: "Central Parks", sectionData: "Third Stop", category: Enums.categories.History.rawValue)
     ]
     
     let sampleCategoryData: [CategoryData] = [
-        CategoryData(name: "History"),
-        CategoryData(name: "Art"),
-        CategoryData(name: "Blah"),
-        CategoryData(name: "Blah2"),
-        CategoryData(name: "Yeet")
+        CategoryData(name: Enums.categories.History.rawValue),
+        CategoryData(name: Enums.categories.Art.rawValue),
+        CategoryData(name: Enums.categories.Science.rawValue),
+        CategoryData(name: Enums.categories.Religion.rawValue),
+        CategoryData(name: Enums.categories.Yeet.rawValue)
     ]
     
     var sliderViewTopConstraints: NSLayoutConstraint?
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
     
     lazy var poiTableView: UITableView = {
         let tableview = UITableView(frame: .zero, style: .grouped)
-        tableview.register(StopsTableViewCell.self, forCellReuseIdentifier: "StopCell")
+        tableview.register(StopsTableViewCell.self, forCellReuseIdentifier: Enums.cellIdentifiers.StopCell.rawValue)
         tableview.delegate = self
         tableview.dataSource = self
         tableview.backgroundColor = .clear
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        collectionView.register(CategoriesCollectionViewCell.self, forCellWithReuseIdentifier: "categoryCell")
+        collectionView.register(CategoriesCollectionViewCell.self, forCellWithReuseIdentifier: Enums.cellIdentifiers.categoryCell.rawValue)
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -274,7 +274,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        guard let cell = poiTableView.dequeueReusableCell(withIdentifier: "StopCell", for: indexPath) as? StopsTableViewCell else { return UITableViewCell() }
+        guard let cell = poiTableView.dequeueReusableCell(withIdentifier: Enums.cellIdentifiers.StopCell.rawValue, for: indexPath) as? StopsTableViewCell else { return UITableViewCell() }
         
         UIView.animate(
             withDuration: 0.3,
@@ -294,15 +294,14 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
 }
 
-      //extension ViewController: UIGestureRecognizerDelegate { }
-extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sampleCategoryData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let category = sampleCategoryData[indexPath.row]
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "categoryCell", for: indexPath) as? CategoriesCollectionViewCell else {return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Enums.cellIdentifiers.categoryCell.rawValue, for: indexPath) as? CategoriesCollectionViewCell else {return UICollectionViewCell()}
         
         cell.setUpCells(cell: cell, data: category)
         
