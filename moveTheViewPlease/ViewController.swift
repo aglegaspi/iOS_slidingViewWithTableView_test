@@ -36,6 +36,7 @@ class ViewController: UIViewController {
     var newSliderViewTopConstraints: NSLayoutConstraint?
     var fullScreenSliderViewConstraints: NSLayoutConstraint?
     //TODO: add new constraint
+
     //TODO: create enum to match state and move to tap
     var sliderViewState: Enums.sliderViewStates = .halfOpen
     let sliderViewHeight: CGFloat = 900
@@ -60,8 +61,8 @@ class ViewController: UIViewController {
     
     lazy var chevronArrows: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(systemName: "chevron.compact.up")
-        image.tintColor = .black
+        image.image = UIImage(systemName: "minus")
+        image.tintColor = .gray
         image.isUserInteractionEnabled = true
         return image
     }()
@@ -108,6 +109,19 @@ class ViewController: UIViewController {
         self.chevronArrows.addGestureRecognizer(tap)
     }
     
+
+    func directionOfChevron(state: Enums.sliderViewStates) {
+        
+        switch state {
+        case .halfOpen:
+            self.chevronArrows.image = UIImage(systemName: "minus")
+        case .fullOpen:
+            self.chevronArrows.image = UIImage(systemName: "chevron.compact.down")
+        case .closed:
+            self.chevronArrows.image = UIImage(systemName: "chevron.compact.up")
+            
+        }
+
     private func createSliderViewConstraints() {
         sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 400)
         sliderViewTopConstraints?.isActive = true
@@ -151,7 +165,7 @@ class ViewController: UIViewController {
                 newSliderViewTopConstraints?.isActive = false
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .halfOpen)
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
@@ -184,7 +198,7 @@ class ViewController: UIViewController {
                 
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .closed)
                     self?.view.layoutIfNeeded()
                     
                     if self?.sliderViewState == .closed {
@@ -210,7 +224,7 @@ class ViewController: UIViewController {
                 }
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .halfOpen)
                     self?.view.layoutIfNeeded()
                     
                     self?.sliderView.alpha = 1.0
@@ -221,8 +235,8 @@ class ViewController: UIViewController {
             default:
                 break
             }
+            
         }
-        
         
     }
     
@@ -284,6 +298,7 @@ class ViewController: UIViewController {
     }
     
 }
+
 
 
 //MARK: -EXT. TABLEVIEW DELEGATE & DATASOURCE
