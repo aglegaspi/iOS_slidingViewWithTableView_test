@@ -5,8 +5,7 @@
 //  Created by Radharani Ribas-Valongo on 2/6/20.
 //  Copyright © 2020 aglegaspi. All rights reserved.
 //
-
-import Foundation
+import UIKit
 
 struct Enums {
     
@@ -18,7 +17,8 @@ struct Enums {
         case categoryCell, StopCell
     }
     
-    enum sliderViewStates: String {
+    enum sliderViewStates {
         case closed, halfOpen, fullOpen
     }
 }
+
