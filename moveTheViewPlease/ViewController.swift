@@ -35,7 +35,6 @@ class ViewController: UIViewController {
     var sliderViewTopConstraints: NSLayoutConstraint?
     var newSliderViewTopConstraints: NSLayoutConstraint?
     //TODO: add new constraint
-    //TODO: create enum to match state and move to tap
     
     let sliderViewHeight: CGFloat = 500
     
@@ -59,8 +58,8 @@ class ViewController: UIViewController {
     
     lazy var chevronArrows: UIImageView = {
         var image = UIImageView()
-        image.image = UIImage(systemName: "chevron.compact.up")
-        image.tintColor = .black
+        image.image = UIImage(systemName: "minus")
+        image.tintColor = .gray
         image.isUserInteractionEnabled = true
         return image
     }()
@@ -107,32 +106,44 @@ class ViewController: UIViewController {
         self.chevronArrows.addGestureRecognizer(tap)
     }
     
+    func directionOfChevron(state: Enums.sliderViewStates) {
+        
+        switch state {
+        case .halfOpen:
+            self.chevronArrows.image = UIImage(systemName: "minus")
+        case .fullOpen:
+            self.chevronArrows.image = UIImage(systemName: "chevron.compact.down")
+        case .closed:
+            self.chevronArrows.image = UIImage(systemName: "chevron.compact.up")
+            
+        }
+    }
     
     //MARK: -RESPOND TO GESTURE
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         print(gesture)
         
         if let tapGesture = gesture as? UITapGestureRecognizer {
-             print("tapped")
-             switch tapGesture.numberOfTouches {
-             case 1:
-                 print("one tap")
+            print("tapped")
+            switch tapGesture.numberOfTouches {
+            case 1:
+                print("one tap")
                 
                 sliderViewTopConstraints?.isActive = true
                 newSliderViewTopConstraints?.isActive = false
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .halfOpen)
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
                     }, completion: nil)
-             case 2:
-                 print("two tap")
-             default:
-                 print("dunno know")
-             }
-             
+            case 2:
+                print("two tap")
+            default:
+                print("dunno know")
+            }
+            
         }
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
@@ -144,7 +155,7 @@ class ViewController: UIViewController {
                 newSliderViewTopConstraints?.isActive = true
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .closed)
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 0.5
                     self?.poiTableView.alpha = 0
@@ -158,7 +169,7 @@ class ViewController: UIViewController {
                 newSliderViewTopConstraints?.isActive = false
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
-                    
+                    self?.directionOfChevron(state: .halfOpen)
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
@@ -168,8 +179,8 @@ class ViewController: UIViewController {
             default:
                 break
             }
+            
         }
-        
         
     }
     
@@ -236,6 +247,7 @@ class ViewController: UIViewController {
 }
 
 
+
 //MARK: -EXT. TABLEVIEW DELEGATE & DATASOURCE
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -273,7 +285,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+        
         guard let cell = poiTableView.dequeueReusableCell(withIdentifier: Enums.cellIdentifiers.StopCell.rawValue, for: indexPath) as? StopsTableViewCell else { return UITableViewCell() }
         
         UIView.animate(
@@ -290,7 +302,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
-
+    
     
 }
 
