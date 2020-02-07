@@ -34,9 +34,12 @@ class ViewController: UIViewController {
     
     var sliderViewTopConstraints: NSLayoutConstraint?
     var newSliderViewTopConstraints: NSLayoutConstraint?
+    var fullScreenSliderViewConstraints: NSLayoutConstraint?
     //TODO: add new constraint
-    
-    let sliderViewHeight: CGFloat = 500
+
+    //TODO: create enum to match state and move to tap
+    var sliderViewState: Enums.sliderViewStates = .halfOpen
+    let sliderViewHeight: CGFloat = 900
     
     
     //MARK: -VIEWS
@@ -106,6 +109,7 @@ class ViewController: UIViewController {
         self.chevronArrows.addGestureRecognizer(tap)
     }
     
+
     func directionOfChevron(state: Enums.sliderViewStates) {
         
         switch state {
@@ -117,6 +121,34 @@ class ViewController: UIViewController {
             self.chevronArrows.image = UIImage(systemName: "chevron.compact.up")
             
         }
+
+    private func createSliderViewConstraints() {
+        sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 400)
+        sliderViewTopConstraints?.isActive = true
+
+        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -65)
+        newSliderViewTopConstraints?.isActive = false
+
+        fullScreenSliderViewConstraints = sliderView.topAnchor.constraint(equalTo: view.topAnchor, constant: 30)
+        fullScreenSliderViewConstraints?.isActive = false
+    }
+    
+    private func setFullOpenSliderViewConstraints() {
+        fullScreenSliderViewConstraints?.isActive = true
+        sliderViewTopConstraints?.isActive = false
+        newSliderViewTopConstraints?.isActive = false
+    }
+    
+    private func setHalfOpenSliderViewConstraints() {
+        fullScreenSliderViewConstraints?.isActive = false
+        sliderViewTopConstraints?.isActive = true
+        newSliderViewTopConstraints?.isActive = false
+    }
+    
+    private func setClosedSliderViewConstraints() {
+        fullScreenSliderViewConstraints?.isActive = false
+        sliderViewTopConstraints?.isActive = false
+        newSliderViewTopConstraints?.isActive = true
     }
     
     //MARK: -RESPOND TO GESTURE
@@ -137,6 +169,7 @@ class ViewController: UIViewController {
                     self?.view.layoutIfNeeded()
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
+                    self?.categoriesCollectionView.alpha = 1.0
                     }, completion: nil)
             case 2:
                 print("two tap")
@@ -151,26 +184,49 @@ class ViewController: UIViewController {
             case UISwipeGestureRecognizer.Direction.down:
                 print("Swiped down")
                 
-                sliderViewTopConstraints?.isActive = false
-                newSliderViewTopConstraints?.isActive = true
+                
+                switch sliderViewState {
+                case .fullOpen:
+                    setHalfOpenSliderViewConstraints()
+                    sliderViewState = .halfOpen
+                case .halfOpen:
+                    setClosedSliderViewConstraints()
+                    sliderViewState = .closed
+                case .closed:
+                    print("it's already closed")
+                }
+                
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                     self?.directionOfChevron(state: .closed)
                     self?.view.layoutIfNeeded()
-                    self?.sliderView.alpha = 0.5
-                    self?.poiTableView.alpha = 0
-                    self?.categoriesCollectionView.alpha = 0
+                    
+                    if self?.sliderViewState == .closed {
+                        self?.sliderView.alpha = 0.5
+                        self?.poiTableView.alpha = 0
+                        self?.categoriesCollectionView.alpha = 0
+                    }
+                    
                     }, completion: nil)
                 
             case UISwipeGestureRecognizer.Direction.up:
                 print("Swiped Up")
                 
-                sliderViewTopConstraints?.isActive = true
-                newSliderViewTopConstraints?.isActive = false
+                switch sliderViewState {
+                case .fullOpen:
+                    print("it's fully opened")
+                case .halfOpen:
+                    setFullOpenSliderViewConstraints()
+                    sliderViewState = .fullOpen
+                case .closed:
+                    setHalfOpenSliderViewConstraints()
+                    sliderViewState = .halfOpen
+                }
                 
                 UIView.animate(withDuration: 1.0, delay: 0, usingSpringWithDamping: 0.80, initialSpringVelocity: 0, options: .curveEaseInOut, animations: { [weak self] in
                     self?.directionOfChevron(state: .halfOpen)
                     self?.view.layoutIfNeeded()
+                    
                     self?.sliderView.alpha = 1.0
                     self?.poiTableView.alpha = 1.0
                     self?.categoriesCollectionView.alpha = 1.0
@@ -183,6 +239,7 @@ class ViewController: UIViewController {
         }
         
     }
+    
     
     //MARK: -OBJ-C FUNCTIONS
     @objc func buttonPressed(sender: UIButton) {
@@ -199,16 +256,12 @@ class ViewController: UIViewController {
     }
     
     //MARK: -CONSTRAINTS
+    
     private func constrainSliderView() {
         sliderView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([sliderView.leadingAnchor.constraint(equalTo: view.leadingAnchor), sliderView.trailingAnchor.constraint(equalTo: view.trailingAnchor), sliderView.heightAnchor.constraint(equalToConstant: sliderViewHeight)])
-        
-        sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 20)
-        sliderViewTopConstraints?.isActive = true
-        
-        newSliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -65)
-        newSliderViewTopConstraints?.isActive = false
+        createSliderViewConstraints()
     }
     
     
