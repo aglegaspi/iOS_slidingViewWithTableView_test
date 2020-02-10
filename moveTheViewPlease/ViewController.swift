@@ -5,6 +5,7 @@
 //  Created by Alex 6.1 on 2/2/20.
 //  Copyright © 2020 aglegaspi. All rights reserved.
 //
+import Foundation
 import UIKit
 
 class ViewController: UIViewController {
@@ -126,6 +127,7 @@ class ViewController: UIViewController {
             self.chevronArrows.image = UIImage(systemName: "chevron.compact.up")
             
         }
+    }
 
     private func createSliderViewConstraints() {
         sliderViewTopConstraints = sliderView.topAnchor.constraint(equalTo: view.bottomAnchor, constant:  -sliderViewHeight + 400)
