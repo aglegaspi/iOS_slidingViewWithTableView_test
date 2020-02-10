@@ -39,6 +39,11 @@ class ViewController: UIViewController {
     //TODO: create enum to match state and move to tap
     var sliderViewState: Enums.sliderViewStates = .halfOpen
     let sliderViewHeight: CGFloat = 900
+    var currentSelectedCategory: String = Enums.categories.History.rawValue {
+        didSet {
+            poiTableView.reloadData()
+        }
+    }
     
     
     //MARK: -VIEWS
@@ -135,6 +140,19 @@ class ViewController: UIViewController {
         fullScreenSliderViewConstraints?.isActive = false
         sliderViewTopConstraints?.isActive = false
         newSliderViewTopConstraints?.isActive = true
+    }
+    private func handleCollectionViewCellPressed(item: Int) {
+        if item == 0 {
+            currentSelectedCategory = Enums.categories.History.rawValue
+        } else if item == 1 {
+            currentSelectedCategory = Enums.categories.Art.rawValue
+        } else if item == 2 {
+            currentSelectedCategory = Enums.categories.Science.rawValue
+        } else if item == 3 {
+            currentSelectedCategory = Enums.categories.Religion.rawValue
+        } else if item == 4 {
+            currentSelectedCategory = Enums.categories.Yeet.rawValue
+        }
     }
     
     //MARK: -RESPOND TO GESTURE
@@ -304,18 +322,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
         
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
-        button.setTitle(sampleData[section].title, for: .normal)
-        button.backgroundColor = .yellow
-        button.addTarget(self, action: #selector(buttonPressed(sender:)), for: .touchDown)
-        button.setTitleColor(.black, for: .normal)
-        button.tag = section
-        view.addSubview(button)
+        if currentSelectedCategory == Enums.categories.History.rawValue {
+            let view = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50))
+            button.setTitle(sampleData[section].title, for: .normal)
+            button.backgroundColor = .yellow
+            button.addTarget(self, action: #selector(buttonPressed(sender:)), for: .touchDown)
+            button.setTitleColor(.black, for: .normal)
+            button.tag = section
+            view.addSubview(button)
+            
+            view.backgroundColor = .gray
+            return view
+        }
         
-        view.backgroundColor = .gray
-        return view
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -364,6 +387,12 @@ extension ViewController: UICollectionViewDataSource, UICollectionViewDelegate, 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        handleCollectionViewCellPressed(item: indexPath.item)
+        print(currentSelectedCategory)
+        
     }
     
 }
